@@ -11,12 +11,33 @@ public class MonsterConfig
 {
 
     @Bean
-	CommandLineRunner load(MonsterRepository repository)
+	CommandLineRunner loadPokedex(MonsterRepository monsterRepo, TypeRepository typeRepo)
 	{
-        Monster pidgey = new Monster(16, "Pidgey", List.of(Type.Normal, Type.Flying), 255);
+		return args -> {
+			typeRepo.save(new Type("normal"));
+            typeRepo.save(new Type("fire"));
+            typeRepo.save(new Type("water"));
+            typeRepo.save(new Type("grass"));
+            typeRepo.save(new Type("electric"));
+            typeRepo.save(new Type("ice"));
+            typeRepo.save(new Type("fighting"));
+            typeRepo.save(new Type("posison"));
+            typeRepo.save(new Type("ground"));
+            typeRepo.save(new Type("flying"));
+            typeRepo.save(new Type("psychic"));
+            typeRepo.save(new Type("bug"));
+            typeRepo.save(new Type("rock"));
+            typeRepo.save(new Type("ghost"));
+            typeRepo.save(new Type("dragon"));
+            typeRepo.save(new Type("dark"));
+            typeRepo.save(new Type("steel"));
+            typeRepo.save(new Type("fairy"));
 
-		return args -> {	
-			repository.save(pidgey);
+			Type normal = typeRepo.findByName("normal").get();
+			Type flying = typeRepo.findByName("flying").get();
+        	Monster pidgey = new Monster(16, "Pidgey", List.of(normal, flying), 255);
+
+			monsterRepo.save(pidgey);
 		};
 	}
     

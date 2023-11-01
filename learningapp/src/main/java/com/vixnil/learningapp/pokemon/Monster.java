@@ -2,9 +2,13 @@ package com.vixnil.learningapp.pokemon;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 @Entity(name="Monster")
 public class Monster
@@ -12,14 +16,22 @@ public class Monster
     @Id
     @Column
     (   
-          name = "id"
+          name = "dex_number"
         , unique = true
     )
     private Integer dexNumber;
 
     @Column(unique = true)
     private String name;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+          name="monster_type_mapping"
+        , joinColumns = @JoinColumn(name="monster_id", referencedColumnName = "dex_number")
+        , inverseJoinColumns = @JoinColumn(name = "type_id", referencedColumnName = "id")
+        )
     private List<Type> types;
+
     private Integer catchRate;
 
     public Monster() 
