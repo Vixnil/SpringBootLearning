@@ -1,0 +1,14 @@
+
+###
+POST http://localhost:8080/pokedex/monster HTTP/1.1
+content-type: application/json
+
+{
+    "dexNumber":17,
+    "name":"Pidgeotto",
+    "types":["Normal","Flying"],
+    "catchRate":120
+}
+
+###
+DELETE http://localhost:8080/pokedex/monster/16 HTTP/1.1

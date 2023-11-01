@@ -1,18 +1,45 @@
 package com.vixnil.learningapp.pokemon;
 
 import java.util.List;
+import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PokedexService 
 {
-    static public List<Monster> getMonsters()
+	private final MonsterRepository repository;
+
+	@Autowired
+	public PokedexService(MonsterRepository repository)
 	{
-		return List.of
-		(
-			new Monster(0016, "Pidgey", List.of(Type.Normal, Type.Flying))
-		);
+		this.repository = repository;
+	}
+
+    public List<Monster> getMonsters()
+	{
+		return repository.findAll();
+	}
+
+	public void addMonster(Monster newRecord) 
+	{
+		Optional<Monster> existingRecord = repository.findByName(newRecord.getName());
+		
+		if(existingRecord.isPresent())
+			throw new IllegalArgumentException("Pokemon name already exists.");
+		else
+			repository.save(newRecord);
+	}
+
+	public void deleteMonster(Integer dexNumber) 
+	{
+		if(repository.existsById(dexNumber))
+			repository.deleteById(dexNumber);
+		else
+			throw new IllegalArgumentException("Pokemon dex number '" + dexNumber + "' does not exist.");
 	}
     
 }
